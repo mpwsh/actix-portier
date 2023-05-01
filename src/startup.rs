@@ -92,7 +92,11 @@ pub async fn run(
             .app_data(web::Data::new(handlebars.clone()))
             .route("/", web::get().to(login_form))
             .route("/health", web::get().to(health))
-            .route("/login", web::get().to(login_form))
+            .service(
+                resource("/login")
+                    .route(web::get().to(login_form))
+                    .route(web::post().to(login))
+            )
             .service(
                 resource("/dashboard")
                     .wrap(from_fn(reject_anonymous_users))
@@ -101,10 +105,8 @@ pub async fn run(
             .service(resource(claim_path).route(web::post().to(claim)))
             .service(
                 resource("/logout")
-                    .route(web::post().to(logout))
-                    .route(web::get().to(logout)),
-            )
-            .service(resource("/login").route(web::post().to(login)))
+                    .route(web::get().to(logout))
+                    .route(web::post().to(logout)))
             .service(resource("/whoami").route(web::get().to(whoami)))
             .service(fs::Files::new("/static/", "./static/"))
     })

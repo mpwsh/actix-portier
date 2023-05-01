@@ -21,9 +21,14 @@ Access the homepage at `127.0.0.1:8000`.
 Available endpoints:
 
 - [/](http://127.0.0.1:8000/login)
-- [/login](http://127.0.0.1:8000/login)
-- [/dashboard](http://127.0.0.1:8000/logout)
-- [/logout](http://127.0.0.1:8000/logout) - clears session
+- GET - [/login](http://127.0.0.1:8000/login)
+- POST - [/login](http://127.0.0.1:8000/login)
+- POST - [/claim](http://127.0.0.1:8000/claim) - Expects Form with `id_token`
+- GET - [/dashboard](http://127.0.0.1:8000/dashboard)
+- GET - [/whoami](http://127.0.0.1:8000/whoami)
+- GET - [/health](http://127.0.0.1:8000/health)
+- GET - [/logout](http://127.0.0.1:8000/logout)
+- POST - [/logout](http://127.0.0.1:8000/logout)
 
 ### Credits
 
