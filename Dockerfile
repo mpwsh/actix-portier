@@ -1,4 +1,6 @@
-FROM lukemathwalker/cargo-chef:latest-rust-1.59.0 as chef
+FROM rust:1.70.0-bookworm as chef
+RUN cargo install cargo-chef --locked
+
 WORKDIR /app
 RUN apt update && apt install lld clang -y
 
@@ -15,7 +17,7 @@ COPY . .
 # Build our project
 RUN cargo build --release --bin actix-portier
 
-FROM debian:bullseye-slim AS runtime
+FROM debian:bookworm-slim AS runtime
 WORKDIR /app
 RUN apt-get update -y \
     && apt-get install -y --no-install-recommends openssl ca-certificates \
