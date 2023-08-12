@@ -1,9 +1,11 @@
-use crate::session_state::TypedSession;
-use crate::utils::{e500, see_other};
-use actix_web::web;
-use actix_web::HttpResponse;
+use actix_web::{web, HttpResponse};
 use handlebars::Handlebars;
 use serde_json::json;
+
+use crate::{
+    session_state::TypedSession,
+    utils::{e500, see_other},
+};
 
 pub async fn dashboard(
     hb: web::Data<Handlebars<'_>>,

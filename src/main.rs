@@ -1,6 +1,8 @@
-use actix_portier::config::get_configuration;
-use actix_portier::startup::Application;
-use actix_portier::telemetry::{get_subscriber, init_subscriber};
+use actix_portier::{
+    config::get_configuration,
+    startup::Application,
+    telemetry::{get_subscriber, init_subscriber},
+};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {

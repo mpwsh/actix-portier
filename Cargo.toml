@@ -10,12 +10,12 @@ authors = ["mpw <x@mpw.sh>", "LukeMathWalker <rust@lpalmieri.com>"]
 actix-web = "4.3.1"
 actix-session = { version = "0.7.2", features = ["redis-rs-tls-session"] }
 chrono = "0.4.26"
-log = "0.4.19"
+log = "0.4.20"
 portier = "0.1.0"
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
-serde = { version="1.0.180", features=["derive"]}
+serde = { version="1.0.183", features=["derive"]}
 tracing = { version = "0.1", features = ["log"] }
-tracing-actix-web = "0.7.5"
+tracing-actix-web = "0.7.6"
 anyhow = "1.0.72"
 secrecy = { version = "0.8", features = ["serde"] }
 config = { version = "0.13", default-features = false, features = ["yaml"] }

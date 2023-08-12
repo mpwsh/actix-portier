@@ -1,12 +1,15 @@
-use crate::errors::CustomError;
-use crate::session_state::TypedSession;
-use crate::utils::{e500, see_other};
 use actix_web::{web, HttpResponse};
 use actix_web_flash_messages::FlashMessage;
 use anyhow::Result;
 use log::error;
 use portier::Client;
 use serde::{Deserialize, Serialize};
+
+use crate::{
+    errors::CustomError,
+    session_state::TypedSession,
+    utils::{e500, see_other},
+};
 
 #[derive(Deserialize)]
 pub struct AuthForm {
@@ -55,7 +58,7 @@ pub async fn login(form: web::Form<AuthForm>, client: web::Data<Client>) -> Http
             ))
             .send();
             see_other("/login")
-        }
+        },
     }
 }
 

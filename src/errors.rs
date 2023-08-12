@@ -1,3 +1,5 @@
+use std::fmt;
+
 use actix_web::{
     body::BoxBody,
     dev::ServiceResponse,
@@ -7,7 +9,6 @@ use actix_web::{
 };
 use handlebars::Handlebars;
 use serde_json::json;
-use std::fmt;
 
 #[derive(Debug)]
 pub enum CustomError {
@@ -27,7 +28,7 @@ impl ResponseError for CustomError {
         match self {
             CustomError::PortierVerifyError(_) => {
                 HttpResponse::InternalServerError().json("Unable to verify identity")
-            }
+            },
         }
     }
 }
@@ -75,7 +76,7 @@ fn get_error_response<B>(res: &ServiceResponse<B>, error: &str) -> HttpResponse<
                     .body(body),
                 Err(_) => fallback(error),
             }
-        }
+        },
         None => fallback(error),
     }
 }

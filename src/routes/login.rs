@@ -1,8 +1,9 @@
+use std::fmt::Write;
+
 use actix_web::{http::header::ContentType, web, HttpResponse};
 use actix_web_flash_messages::IncomingFlashMessages;
 use handlebars::Handlebars;
 use serde_json::json;
-use std::fmt::Write;
 
 pub async fn login_form(
     hb: web::Data<Handlebars<'_>>,

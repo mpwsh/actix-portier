@@ -1,7 +1,5 @@
-use crate::authentication::reject_anonymous_users;
-use crate::config::Settings;
-use crate::errors::error_handlers;
-use crate::routes::{claim, dashboard, health, login, login_form, logout, whoami};
+use std::net::TcpListener;
+
 use actix_files as fs;
 use actix_session::{config::PersistentSession, storage::RedisSessionStore, SessionMiddleware};
 use actix_web::{
@@ -15,8 +13,14 @@ use actix_web_lab::middleware::from_fn;
 use handlebars::Handlebars;
 use portier::Client;
 use secrecy::{ExposeSecret, Secret};
-use std::net::TcpListener;
 use tracing_actix_web::TracingLogger;
+
+use crate::{
+    authentication::reject_anonymous_users,
+    config::Settings,
+    errors::error_handlers,
+    routes::{claim, dashboard, health, login, login_form, logout, whoami},
+};
 
 pub struct Application {
     port: u16,
@@ -82,7 +86,8 @@ pub async fn run(
                 SessionMiddleware::builder(redis_store.clone(), secret_key.clone())
                     .cookie_secure(false)
                     .session_lifecycle(
-                        PersistentSession::default().session_ttl(cookie::time::Duration::hours(session_ttl)),
+                        PersistentSession::default()
+                            .session_ttl(cookie::time::Duration::hours(session_ttl)),
                     )
                     .build(),
             )
@@ -95,7 +100,7 @@ pub async fn run(
             .service(
                 resource("/login")
                     .route(web::get().to(login_form))
-                    .route(web::post().to(login))
+                    .route(web::post().to(login)),
             )
             .service(
                 resource("/dashboard")
@@ -106,7 +111,8 @@ pub async fn run(
             .service(
                 resource("/logout")
                     .route(web::get().to(logout))
-                    .route(web::post().to(logout)))
+                    .route(web::post().to(logout)),
+            )
             .service(resource("/whoami").route(web::get().to(whoami)))
             .service(fs::Files::new("/static/", "./static/"))
     })
