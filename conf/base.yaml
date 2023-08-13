@@ -2,6 +2,6 @@ application:
   port: 8000
   host: 0.0.0.0
   hmac_secret: "super-long-and-secret-random-key-needed-to-verify-message-integrity"
-  session_ttl: 48  # in hours
+  session_ttl: 48  # hours
 redis_uri: "redis://127.0.0.1:6379"
-portier_uri: "https://broker.mpw.sh"
+portier_uri: "http://127.0.0.1:3333"

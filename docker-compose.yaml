@@ -5,9 +5,46 @@ services:
     image: redis:latest
     container_name: redis
     ports:
-      - "6379:6379"
+      - 6379:6379
     volumes:
       - redis_data:/data
 
+  portier:
+    image: portier/broker:latest
+    container_name: portier
+    ports:
+      - 3333:3333
+    environment:
+      - BROKER_FROM_NAME=Portier
+      - BROKER_FROM_ADDRESS=login@example.com
+      - BROKER_PUBLIC_URL=http://127.0.0.1:3333
+      - BROKER_SMTP_SERVER=mailcrab:1025
+    command: ["/data/config.toml"]
+    volumes:
+     -  portier_data:/data
+     - ./conf/portier.toml:/data/config.toml
+
+  mailcrab:
+    image: marlonb/mailcrab:latest
+    container_name: mailcrab
+    ports:
+      - 1080:1080
+      - 1025:1025
+
+  smolkv:
+    image: mpwsh/smol-kv:latest
+    container_name: smolkv
+    ports:
+      - 5050:5050
+    environment:
+      - PORT=5050
+      - WORKERS=4
+      - LOG_LEVEL=info
+      - DATABASE_PATH=./data
+    volumes:
+      - smolkv_data:/data
+
 volumes:
   redis_data:
+  smolkv_data:
+  portier_data:
