@@ -4,7 +4,7 @@ Actix web using [Portier](https://portier.github.io) for authentication and Hand
 
 ### Usage
 
-Start redis (for session persistance) using `docker-compose`.
+Start redis (for session persistence) using `docker-compose`.
 
 ```bash
 docker-compose up -d
