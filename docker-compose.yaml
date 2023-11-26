@@ -21,7 +21,7 @@ services:
       - BROKER_SMTP_SERVER=mailcrab:1025
     command: ["/data/config.toml"]
     volumes:
-      - portier_data:/data
+      - ./conf/portier:/tmp/templates
       - ./conf/portier.toml:/data/config.toml
 
   mailcrab:

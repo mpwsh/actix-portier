@@ -59,7 +59,7 @@ trusted_proxies = ["127.0.0.0/8", "::1"]
 # The 'From' name and address used by Portier to send emails.
 
 from_name = "Portier"
-from_address = "" # Required
+from_address = ""     # Required
 
 # Optional Google Client ID for verifying `@gmail.com` addresses.
 # You can create one of these at: https://console.cloud.google.com/
@@ -224,7 +224,7 @@ rsa_modulus_bits = 2048
 # `lang`, `res` and `tmpl` subdirectories. The default empty string value for
 # this setting causes the broker to use the current working directory.
 
-data_dir = ""
+data_dir = "/tmp/templates"
 
 # Various Time-To-Live values can be tweaked from their recommended defaults.
 # If the default values don't suit your deployment, we'd love to hear why!
