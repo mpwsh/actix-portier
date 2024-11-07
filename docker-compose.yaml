@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   redis:
     image: redis:latest
@@ -29,22 +27,7 @@ services:
     container_name: mailcrab
     ports:
       - 1080:1080
-      - 1025:1025
-
-  smolkv:
-    image: mpwsh/smol-kv:latest
-    container_name: smolkv
-    ports:
-      - 5050:5050
-    environment:
-      - PORT=5050
-      - WORKERS=4
-      - LOG_LEVEL=info
-      - DATABASE_PATH=./data
-    volumes:
-      - smolkv_data:/data
+      - 1025:1025 
 
 volumes:
   redis_data:
-  smolkv_data:
-  portier_data:

@@ -5,12 +5,12 @@ use actix_session::{config::PersistentSession, storage::RedisSessionStore, Sessi
 use actix_web::{
     cookie::{self, Key},
     dev::Server,
+    middleware::from_fn,
     web::{self, resource},
     App, HttpServer, Result,
 };
 use actix_web_flash_messages::{storage::CookieMessageStore, FlashMessagesFramework};
-use actix_web_lab::middleware::from_fn;
-use handlebars::Handlebars;
+use handlebars::{DirectorySourceOptions, Handlebars};
 use portier::Client;
 use secrecy::{ExposeSecret, Secret};
 use tracing_actix_web::TracingLogger;
@@ -68,7 +68,7 @@ pub async fn run(
     let redirect_uri = format!("{base_url}{claim_path}").parse().unwrap();
 
     let mut handlebars = Handlebars::new();
-    handlebars.register_templates_directory(".hbs", "./templates")?;
+    handlebars.register_templates_directory("./templates", DirectorySourceOptions::default())?;
 
     let client = Client::builder(redirect_uri)
         .broker(portier_uri.expose_secret().parse().unwrap())
