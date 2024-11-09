@@ -305,10 +305,10 @@ limits = [
   "ip:extend_window:100/5s",
   # Per IP and email, max 30 requests per hour.
   "ip:email:30/h",
-  # Per IP and email, allow 5 slots per 15 minutes.
-  "ip:email:decr_complete:5/15m",
+  # Per IP and email, allow 20 slots per 15 minutes.
+  "ip:email:decr_complete:20/15m",
   # Per IP and email, allow 2 slots per 15 minutes on each site.
-  "ip:email:origin:decr_complete:2/15m",
+  "ip:email:origin:decr_complete:10/15m",
 ]
 
 ################################################################

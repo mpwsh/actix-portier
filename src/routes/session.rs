@@ -6,7 +6,7 @@ use portier::Client;
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    errors::CustomError,
+    errors::ApiError,
     session_state::TypedSession,
     utils::{e500, see_other},
 };
@@ -27,29 +27,47 @@ pub struct UserData {
 }
 
 pub async fn claim(
-    form: web::Form<VerifyForm>,
+    form: Option<web::Form<VerifyForm>>,
     client: web::Data<Client>,
     session: TypedSession,
-) -> Result<HttpResponse, CustomError> {
-    let email = client
-        .verify(&form.id_token)
-        .await
-        .map_err(|err| {
-            error!("Portier verify error: {}", err);
-            CustomError::PortierVerifyError(err.to_string())
-        })
-        .unwrap();
-    session.insert_user(&email).unwrap();
-    session.renew();
-    Ok(see_other("/dashboard"))
+) -> HttpResponse {
+    match form {
+        Some(form) => {
+            let verification = client.verify(&form.id_token).await.map_err(|err| {
+                error!("Portier verify error: {}", err);
+                ApiError::PortierVerifyError(err.to_string())
+            });
+            let mut email = String::new();
+            match verification {
+                Ok(addr) => email = addr,
+                Err(e) => {
+                    FlashMessage::info(format!(
+                        "{e:?}. Unable to initialize session. Please try again"
+                    ))
+                    .send();
+                    see_other("/login");
+                },
+            };
+            session.insert_user(&email).unwrap();
+            session.renew();
+            see_other("/dashboard")
+        },
+        None => {
+            FlashMessage::info(
+                "Internal server error. Unable to initialize session. Please try again",
+            )
+            .send();
+            see_other("/login")
+        },
+    }
 }
 
-pub async fn whoami(session: TypedSession) -> Result<HttpResponse, CustomError> {
+pub async fn whoami(session: TypedSession) -> Result<HttpResponse, ApiError> {
     let email = session.get_user().unwrap();
     Ok(HttpResponse::Ok().json(UserData { email }))
 }
 
-pub async fn login(form: web::Form<AuthForm>, client: web::Data<Client>) -> HttpResponse {
+pub async fn authenticate(form: web::Form<AuthForm>, client: web::Data<Client>) -> HttpResponse {
     match client.start_auth(&form.email).await {
         Ok(url) => see_other(url.as_ref()),
         Err(err) => {

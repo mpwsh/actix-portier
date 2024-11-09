@@ -11,22 +11,22 @@ use handlebars::Handlebars;
 use serde_json::json;
 
 #[derive(Debug)]
-pub enum CustomError {
+pub enum ApiError {
     PortierVerifyError(String),
 }
 
-impl fmt::Display for CustomError {
+impl fmt::Display for ApiError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            CustomError::PortierVerifyError(msg) => write!(f, "Portier verify error: {}", msg),
+            ApiError::PortierVerifyError(msg) => write!(f, "Portier verify error: {}", msg),
         }
     }
 }
 
-impl ResponseError for CustomError {
+impl ResponseError for ApiError {
     fn error_response(&self) -> HttpResponse {
         match self {
-            CustomError::PortierVerifyError(_) => {
+            ApiError::PortierVerifyError(_) => {
                 HttpResponse::InternalServerError().json("Unable to verify identity")
             },
         }

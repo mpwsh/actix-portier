@@ -1,3 +1,5 @@
 application:
   host: 0.0.0.0
-  base_url: "https://yourdomain.com"
+  base_url: "http://yourdomain.com"
+
+portier_uri: "https://broker.mpw.sh"

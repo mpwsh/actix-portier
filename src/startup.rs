@@ -19,7 +19,7 @@ use crate::{
     authentication::reject_anonymous_users,
     config::Settings,
     errors::error_handlers,
-    routes::{claim, dashboard, health, login, login_form, logout, whoami},
+    routes::{authenticate, claim, dashboard, health, login, logout, whoami},
 };
 
 pub struct Application {
@@ -64,6 +64,7 @@ pub async fn run(
     portier_uri: Secret<String>,
     session_ttl: i64,
 ) -> Result<Server, anyhow::Error> {
+    use actix_cors::Cors;
     let claim_path = "/claim";
     let redirect_uri = format!("{base_url}{claim_path}").parse().unwrap();
 
@@ -80,6 +81,7 @@ pub async fn run(
     let redis_store = RedisSessionStore::new(redis_uri.expose_secret()).await?;
 
     let server = HttpServer::new(move || {
+        let cors = Cors::permissive();
         App::new()
             .wrap(message_framework.clone())
             .wrap(
@@ -92,15 +94,16 @@ pub async fn run(
                     .build(),
             )
             .wrap(error_handlers())
+            .wrap(cors)
             .wrap(TracingLogger::default())
             .app_data(web::Data::new(client.clone()))
             .app_data(web::Data::new(handlebars.clone()))
-            .route("/", web::get().to(login_form))
+            .route("/", web::get().to(login))
             .route("/health", web::get().to(health))
             .service(
                 resource("/login")
-                    .route(web::get().to(login_form))
-                    .route(web::post().to(login)),
+                    .route(web::get().to(login))
+                    .route(web::post().to(authenticate)),
             )
             .service(
                 resource("/dashboard")

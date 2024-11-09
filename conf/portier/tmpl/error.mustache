@@ -7,20 +7,31 @@
     <link rel="stylesheet" href="static/style.css" />
   </head>
   <body>
-    <div class="container">
-      <p class="head">{{ intro }}</p>
-
-      {{# error }}
-      <p>{{ reason }}: {{ error }}</p>
-      {{/ error }}
-
-      <p>{{ explanation }}</p>
-
-      {{# ref }}
-      <p>
-        <code>[REF:{{ ref }}]</code>
-      </p>
-      {{/ ref }}
+    <div class="flex-container">
+      <div class="form-container">
+        <h1 class="head">{{ intro }}</h1>
+        <aside>
+          <br />
+          {{# error }}
+          <p>
+            <span class="subtitle-white">{{ reason }}: {{ error }}</span>
+          </p>
+          {{/ error }}
+          <p>
+            <span class="subtitle-white">{{ explanation }}</span>
+          </p>
+          {{# ref }}
+          <p>
+            <code>[REF:{{ ref }}]</code>
+          </p>
+          {{/ ref }}
+          <br />
+          <span class="powered-by-btn">
+            Powered by
+            <a href="https://portier.github.io">Portier</a>
+          </span>
+        </aside>
+      </div>
     </div>
   </body>
 </html>

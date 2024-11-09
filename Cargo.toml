@@ -1,6 +1,6 @@
 [package]
 name = "actix-portier"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 authors = ["mpw <x@mpw.sh>", "LukeMathWalker <rust@lpalmieri.com>"]
 
@@ -34,6 +34,7 @@ reqwest = { version = "0.12", default-features = false, features = [
   "rustls-tls",
   "cookies",
 ] }
+actix-cors = { version = "0.7.0", features = ["draft-private-network-access"]}
 
 [lib]
 path = "src/lib.rs"
